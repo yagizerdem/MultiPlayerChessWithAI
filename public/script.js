@@ -128,6 +128,7 @@ socket.on("matchfound" , (color)=>{
 })
 socket.on("opponentMove",(DTO) =>{
     MovePiece(DTO.from , DTO.to)
+    Promote()
     TURN = !TURN
     RenderBoard()
 })
