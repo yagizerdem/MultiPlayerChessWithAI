@@ -1,0 +1,48 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="style.css">
+    <link rel="stylesheet" href="MainMenu.css">
+    <link rel="stylesheet" href="spinner.css">
+    <title>Chess</title>
+</head>
+<body id="body">
+    
+    <div class="page" id="page">
+        <div class="card" id="card">
+            <button id="singleplayermodebutton">Single Player</button>
+            <button id="multiplayermodebutton">Multi Player</button>
+            <button id="aimodebutton">Play against AI</button>
+        </div>
+    </div>
+
+    <div class="container" id="container" style="display: none;">
+
+        <div class="ChatArea">
+            <div class="Screen" id="screen">
+
+            </div>
+            <div class="row">
+                <input type="text" id="input">
+                <br>
+                <button id="chat" class="chat">Send Chat</button>
+                <br>
+                <button id="leave" class="leave" >Leave Match</button>
+            </div>
+        </div>
+    </div>
+
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.7.1/jquery.min.js" integrity="sha512-v2CJ7UaYy4JwqLDIrZUI/4hqeoQieOmAZNXBeQyjo21dadnwR+8ZaIJVT8EE2iyI61OV8e6M8PP2/4hpQINQ/g==" crossorigin="anonymous" referrerpolicy="no-referrer"></script>
+    <script src="/socket.io/socket.io.js"></script>
+<script>
+  const socket = io();
+</script>
+    <script src="SD.js"></script>
+    <script src="UI.js"></script>
+    <script src="Engine.js"></script>
+    <script src="AI.js"></script>
+    <script src="script.js"></script>
+</body>
+</html>

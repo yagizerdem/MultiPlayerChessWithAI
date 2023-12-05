@@ -1,0 +1,35 @@
+*{
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+.page{
+    width: 100%;
+    height: 100vh;
+    background-image: url("./chessbackgroundimg.jpg");
+    background-size: cover;
+    background-position: center;
+}
+.card{
+    width: 400px;
+    height: 400px;
+    background: wheat;
+    border: 10px solid black;
+    border-radius: 20px;
+    position: absolute;
+    top:50%;
+    left:50%;
+    margin-top: -200px;
+    margin-left: -200px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    flex-direction: column;
+}
+.card >button{
+    background: linear-gradient(16deg, rgba(92,92,193,0.908000700280112) 54%, rgba(68,68,163,0.908000700280112) 60%, rgba(198,194,96,1) 91%);
+    cursor: pointer;
+    color: #fff;
+    font-size: 20px;
+    height: 40px;
+}
