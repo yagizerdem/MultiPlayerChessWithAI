@@ -141,7 +141,6 @@ function MovePiece(from , to){
         BOARD[from[0]][5] =  BOARD[from[0]][7]
         BOARD[from[0]][7] = " "
         var ShortCastle = true
-        console.log("girdi")
     }
     const DTO = {
         KilledPiece : BOARD[to[0]][to[1]],
@@ -165,10 +164,22 @@ function UndoMovePiece(MoveDTO){
     if(MoveDTO.LongCastle == true){
         BOARD[MoveDTO.from[0]][3] = " "
         BOARD[MoveDTO.from[0]][0] = MoveDTO.MovedPiece =="k" ? "r" : "R"
+        if(MoveDTO.MovedPiece =="k"){
+            BLACKLONGCASTLE == true
+        }
+        else if(MoveDTO.MovedPiece =="K"){
+            WHITELONGCASTLE = true
+        }
     }
     else if(MoveDTO.ShortCastle == true){
         BOARD[MoveDTO.from[0]][7] = " "
         BOARD[MoveDTO.from[0]][5] = MoveDTO.MovedPiece =="k" ? "r" : "R"
+        if(MoveDTO.MovedPiece =="k"){
+            BLACKSHORTCASTLE == true
+        }
+        else if(MoveDTO.MovedPiece =="K"){
+            WHITESHORTCASTLE = true
+        }
     }
 }
 
@@ -215,9 +226,36 @@ function SwitchColor(){
 
 function CheckCastle(diff,from){
     const x_counter = diff < 0 ? 1 : -1  
-    console.log(x_counter)
     for(var i = 0 ,x = 0; i < 3 ; i++ , x+=x_counter){
         if(!CheckSquareThreat([from[0], from[1] + x]) || (BOARD[from[0]][from[1] + x] != BOARD[from[0]][from[1]] && BOARD[from[0]][from[1] + x] !=" ")) return false 
     }
     return true
+}
+
+// cheking move is castl if then restrict castling for other attempts
+function CheckMoveForCastle(dto){
+    if((dto.color == Color.White && (dto.LongCastle == true || dto.ShortCastle == true ))|| dto.MovedPiece == "K"){
+        WHITELONGCASTLE = false
+        WHITESHORTCASTLE = false
+    }
+    else if((dto.color == Color.Black && (dto.LongCastle == true || dto.ShortCastle == true )) || dto.MovedPiece == "k"){
+        BLACKLONGCASTLE = false
+        BLACKSHORTCASTLE = false
+    }    
+    else if(dto.MovedPiece == "R" && (dto.from[1] == 0))
+    {
+        WHITELONGCASTLE = false
+    }
+    else if(dto.MovedPiece == "R" && (dto.from[1] == 7))
+    {
+        WHITESHORTCASTLE = false
+    }
+    else if(dto.MovedPiece == "r" && (dto.from[1] == 0))
+    {
+        BLACKLONGCASTLE = false
+    }
+    else if(dto.MovedPiece == "r" && (dto.from[1] == 7))
+    {
+        BLACKSHORTCASTLE = false
+    }
 }

@@ -208,6 +208,10 @@ function MiniMax(depth){
     if(moveDTO_list.length == 0) MiniMax(depth + 1)
     for(var move of moveDTO_list){
         var DTO = MovePiece(move.from , move.to)
+        if(DTO.ShortCastle != null || DTO.LongCastle != null){
+            var a = 0
+        }
+        CheckMoveForCastle(DTO)
         Promote()
         SwitchColor()
         var score = MiniMax(depth + 1)
@@ -228,11 +232,12 @@ function FindBestMove()
     var moveDTO_list = MoveGenerator()
     for(var move of moveDTO_list){
         var DTO = MovePiece(move.from , move.to)
+        CheckMoveForCastle(DTO)
         Promote()
         SwitchColor()
         var score = MiniMax(0)
-        SwitchColor()
         UndoMovePiece(DTO)
+        SwitchColor()
         if(score < BestScore){
             BestScore = score
             BestMoveDTO = DTO
