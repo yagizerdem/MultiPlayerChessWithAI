@@ -1,5 +1,17 @@
 
 function Validate(PieceType , from , to){
+    var diff = from[1] - to[1]
+    if(
+    (BOARD[from[0]][from[1]] == "K" && diff == 2 && WHITELONGCASTLE)
+    ||
+    (BOARD[from[0]][from[1]] == "K" && diff == -2 && WHITESHORTCASTLE)
+    ||
+    (BOARD[from[0]][from[1]] == "k" && diff == 2 && BLACKLONGCASTLE)
+    ||
+    (BOARD[from[0]][from[1]] == "k" && diff == -2 && BLACKSHORTCASTLE)
+    ){
+        return CheckCastle(diff,from)
+    }
     return CheckDirection(PieceType , from , to) && CheckBlock(PieceType , from , to) && CheckKingInDanger(from , to)
 }
 
@@ -85,7 +97,7 @@ function CheckKingInDanger(from , to){
     return true;
 }
 // checking  square is therated by opponent pieces 
-// returns trui if square is safe
+// returns true if square is safe
 function CheckSquareThreat(square)
 {
     for(var i = 0 ; i < 8 ; i++){
@@ -116,8 +128,21 @@ function GetKingCoord(){
 
 function MovePiece(from , to){
     var diff_file = from[1] - to[1]
-    if(BOARD[from[0]][from[1]].toLowerCase() == "k" &&  diff_file == 2 ) var LongCastle = true
-    else if(BOARD[from[0]][from[1]].toLowerCase() == "k" &&  diff_file == -2) var ShortCastle = true
+    // long castle
+    if(BOARD[from[0]][from[1]].toLowerCase() == "k" &&  diff_file == 2 ){
+        // moving rook
+        BOARD[from[0]][3] =  BOARD[from[0]][0]
+        BOARD[from[0]][0] = " " 
+        var LongCastle = true
+    }
+    // short castle
+    else if(BOARD[from[0]][from[1]].toLowerCase() == "k" &&  diff_file == -2) {
+        // moving rook
+        BOARD[from[0]][5] =  BOARD[from[0]][7]
+        BOARD[from[0]][7] = " "
+        var ShortCastle = true
+        console.log("girdi")
+    }
     const DTO = {
         KilledPiece : BOARD[to[0]][to[1]],
         MovedPiece : BOARD[from[0]][from[1]],
@@ -125,6 +150,7 @@ function MovePiece(from , to){
         to : to,
         ShortCastle: ShortCastle,
         LongCastle: LongCastle,
+        color : PLAYERCOLOR,
     }
     // moving piece on board matrix
     BOARD[to[0]][to[1]] = BOARD[from[0]][from[1]]
@@ -135,6 +161,15 @@ function MovePiece(from , to){
 function UndoMovePiece(MoveDTO){
     BOARD[MoveDTO.to[0]][MoveDTO.to[1]] = MoveDTO.KilledPiece
     BOARD[MoveDTO.from[0]][MoveDTO.from[1]] =MoveDTO.MovedPiece
+    // if move is castle adjust places of rook extra 
+    if(MoveDTO.LongCastle == true){
+        BOARD[MoveDTO.from[0]][3] = " "
+        BOARD[MoveDTO.from[0]][0] = MoveDTO.MovedPiece =="k" ? "r" : "R"
+    }
+    else if(MoveDTO.ShortCastle == true){
+        BOARD[MoveDTO.from[0]][7] = " "
+        BOARD[MoveDTO.from[0]][5] = MoveDTO.MovedPiece =="k" ? "r" : "R"
+    }
 }
 
 function MoveGenerator(){
@@ -176,4 +211,13 @@ function Promote(){
 }
 function SwitchColor(){
     PLAYERCOLOR = PLAYERCOLOR == Color.White ? Color.Black : Color.White
+}
+
+function CheckCastle(diff,from){
+    const x_counter = diff < 0 ? 1 : -1  
+    console.log(x_counter)
+    for(var i = 0 ,x = 0; i < 3 ; i++ , x+=x_counter){
+        if(!CheckSquareThreat([from[0], from[1] + x]) || (BOARD[from[0]][from[1] + x] != BOARD[from[0]][from[1]] && BOARD[from[0]][from[1] + x] !=" ")) return false 
+    }
+    return true
 }

@@ -78,3 +78,9 @@ var CHATBUTTON;
 var LEAVEBUTTON;
 var SCREEN;
 var INPUT
+
+// castle
+var WHITELONGCASTLE = true
+var WHITESHORTCASTLE = true
+var BLACKLONGCASTLE = true
+var BLACKSHORTCASTLE = true

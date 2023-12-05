@@ -57,6 +57,8 @@ function Main(){
     if(flag){
         ControlCheckMate()
         const dto = MovePiece(from ,to)
+        // checking is king moved
+        CheckMoveForCastle(dto)
         RenderBoard()
         if(GAMEMODE == gameModes.multiplayer){
             TURN = !TURN
@@ -165,5 +167,32 @@ function ControlCheckMate(){
             socket.emit("chechmate")
         }
         PrintChatToScreen("Check mate ", "blue")
+    }
+}
+// cheking move is castl if then restrict castling for other attempts
+function CheckMoveForCastle(dto){
+    if((dto.color == Color.White && (dto.LongCastle == true || dto.ShortCastle == true ))|| dto.MovedPiece == "K"){
+        WHITELONGCASTLE = false
+        WHITESHORTCASTLE = false
+    }
+    else if((dto.color == Color.Black && (dto.LongCastle == true || dto.ShortCastle == true )) || dto.MovedPiece == "k"){
+        BLACKLONGCASTLE = false
+        BLACKSHORTCASTLE = false
+    }    
+    else if(dto.MovedPiece == "R" && (dto.from[1] == 0))
+    {
+        WHITELONGCASTLE = false
+    }
+    else if(dto.MovedPiece == "R" && (dto.from[1] == 7))
+    {
+        WHITESHORTCASTLE = false
+    }
+    else if(dto.MovedPiece == "r" && (dto.from[1] == 0))
+    {
+        BLACKLONGCASTLE = false
+    }
+    else if(dto.MovedPiece == "r" && (dto.from[1] == 7))
+    {
+        BLACKSHORTCASTLE = false
     }
 }
