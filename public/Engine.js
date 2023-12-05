@@ -76,21 +76,30 @@ function CheckKingInDanger(from , to){
     var MoveDTO = MovePiece(from , to)
     Promote()
     var king_rank_file = GetKingCoord();
+    if(!CheckSquareThreat(king_rank_file)){
+        UndoMovePiece(MoveDTO)
+        return
+    }
+
+    UndoMovePiece(MoveDTO)
+    return true;
+}
+// checking  square is therated by opponent pieces 
+// returns trui if square is safe
+function CheckSquareThreat(square)
+{
     for(var i = 0 ; i < 8 ; i++){
         for(var j = 0 ; j < 8 ; j++){
             if(PLAYERCOLOR == Color.White && BLACKPIECELIST.includes(BOARD[i][j]) || PLAYERCOLOR == Color.Black && WHITEPIECELIST.includes(BOARD[i][j])){
-                if(CheckBlock(BOARD[i][j], [i,j] , king_rank_file) && CheckDirection(BOARD[i][j], [i,j] , king_rank_file))
+                if(CheckBlock(BOARD[i][j], [i,j] , square) && CheckDirection(BOARD[i][j], [i,j] , square))
                 {
-                    UndoMovePiece(MoveDTO)
                     return false;
                 }
             }
         }
     }
-    UndoMovePiece(MoveDTO)
-    return true;
+    return true
 }
-
 function GetKingCoord(){
     for(var i = 0  ; i < 8 ; i++){
         for(var j = 0 ; j <8 ; j++){
