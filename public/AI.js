@@ -205,12 +205,12 @@ function MiniMax(depth){
     }
     var bestScore =  -99999
     var moveDTO_list = MoveGenerator()
-    if(moveDTO_list.length == 0) MiniMax(depth + 1)
+    if(moveDTO_list.length == 0) {
+        if(PLAYERCOLOR == Color.White) return -9999999
+        else return 99999999
+    }
     for(var move of moveDTO_list){
         var DTO = MovePiece(move.from , move.to)
-        if(DTO.ShortCastle != null || DTO.LongCastle != null){
-            var a = 0
-        }
         CheckMoveForCastle(DTO)
         Promote()
         SwitchColor()

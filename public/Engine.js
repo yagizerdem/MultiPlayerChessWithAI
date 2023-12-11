@@ -77,7 +77,7 @@ function CheckBlock(PieceType , from , to){
         try{
             if(BOARD[y][x] != " ") return false;
         }catch{
-            console.log(y,x)
+            
         }
 
     }
